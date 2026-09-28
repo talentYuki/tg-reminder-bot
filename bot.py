@@ -119,6 +119,7 @@ async def cancel(msg: Message):
 
 
 async def scheduler(bot: Bot):
+    global reminders
     while True:
         now = dt.datetime.now()
         due = [r for r in reminders if r["when"] <= now]
@@ -127,7 +128,6 @@ async def scheduler(bot: Bot):
                 await bot.send_message(r["chat"], "⏰ " + r["text"])
             except Exception:
                 pass
-        global reminders
         if due:
             ids = {d["id"] for d in due}
             reminders = [r for r in reminders if r["id"] not in ids]
